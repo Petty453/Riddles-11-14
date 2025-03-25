@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riddles 11-14</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #222; color: white; }
+        .container { margin-top: 100px; }
+        input { padding: 10px; font-size: 16px; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container" id="codePage">
+        <h1>Riddles 11-14</h1>
+        <p>Enter the code to start:</p>
+        <input type="text" id="codeInput" placeholder="Code:">
+        <button onclick="checkCode()">Enter</button>
+        <p id="codeMessage"></p>
+    </div>
+    
+    <div class="container hidden" id="riddlePage">
+        <h2 id="riddleText"></h2>
+        <input type="text" id="answerInput" placeholder="Answer:">
+        <button onclick="checkAnswer()">Submit</button>
+        <p id="message"></p>
+    </div>
+    
+    <div class="container hidden" id="scorePage">
+        <h2>Score: <span id="finalScore"></span>/16</h2>
+        <p>Thank you for completing these riddles!</p>
+    </div>
+
+    <script>
+        let correctCode = "jcriddles47:)", score = 0, currentRiddle = 0;
+        let riddles = [
+            { question: "What has many rings but no fingers?", answers: ["telephone", "a telephone", "Telephone", "A telephone", "telephone?"] },
+            { question: "A doctor and a bus driver are both in love with the same woman. The bus driver has to go on a long trip for a week. Before he leaves, he gives the woman seven apples. Why?", answers: ["an apple a day keeps the doctor away", "apple a day", "keeps the doctor away"] },
+            { question: "A man stands on one side of a river, his dog on the other. The man calls his dog, who immediately crosses the river without getting wet and without using a bridge or a boat. How?", answers: ["the river was frozen", "frozen river", "it was frozen"] },
+            { question: "A girl drops her ring into a cup of coffee but it doesn’t get wet. How?", answers: ["it was coffee beans", "coffee beans", "a cup of coffee beans"] }
+        ];
+        
+        function checkCode() {
+            let input = document.getElementById("codeInput").value;
+            if (input === correctCode) {
+                document.getElementById("codePage").classList.add("hidden");
+                document.getElementById("riddlePage").classList.remove("hidden");
+                loadRiddle();
+            } else {
+                document.getElementById("codeMessage").textContent = "Incorrect code! Try again!";
+            }
+        }
+        
+        function loadRiddle() {
+            document.getElementById("riddleText").textContent = riddles[currentRiddle].question;
+            document.getElementById("message").textContent = "";
+            document.getElementById("answerInput").value = "";
+        }
+        
+        function checkAnswer() {
+            let input = document.getElementById("answerInput").value.toLowerCase().trim();
+            let validAnswers = riddles[currentRiddle].answers.map(a => a.toLowerCase());
+            
+            if (validAnswers.includes(input)) {
+                document.getElementById("message").innerHTML = "<span style='color: green; font-size: 20px;'>CORRECT! 🎉🎉</span>";
+                score += 4;
+            } else {
+                document.getElementById("message").innerHTML = "<span style='color: red; font-size: 24px; font-weight: bold;'>INCORRECT!!! 😱😱😱</span>";
+            }
+            
+            setTimeout(nextRiddle, 2000);
+        }
+        
+        function nextRiddle() {
+            currentRiddle++;
+            if (currentRiddle < riddles.length) {
+                loadRiddle();
+            } else {
+                showScore();
+            }
+        }
+        
+        function showScore() {
+            document.getElementById("riddlePage").classList.add("hidden");
+            document.getElementById("scorePage").classList.remove("hidden");
+            document.getElementById("finalScore").textContent = score;
+        }
+        
+        document.addEventListener("visibilitychange", function() {
+            if (document.hidden) {
+                alert("No cheating! Stay on this page!");
+            }
+        });
+    </script>
+</body>
+</html>
